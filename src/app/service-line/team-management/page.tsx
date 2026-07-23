@@ -1,0 +1,9 @@
+import React from 'react';
+
+export default function TeamManagementPage() {
+  return (
+    <div className="p-8">
+      <h1 className="text-2xl font-bold">Team Management</h1>
+    </div>
+  );
+}
