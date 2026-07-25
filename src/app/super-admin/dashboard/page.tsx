@@ -1,4 +1,4 @@
-import { DashboardTable } from '@/components/shared/DashboardTable/DashboardTable';
+import { DashboardTable } from '@/components/employee-team-leader/shared/DashboardTable/DashboardTable';
 import React from 'react';
 
 export default function SuperAdminDashboard() {
@@ -15,10 +15,10 @@ export default function SuperAdminDashboard() {
   return (
     <main className="p-8">
       <h1 className="mb-6 text-2xl font-bold">Super Admin Dashboard</h1>
-      <DashboardTable 
+      <DashboardTable
         caption="List of recent active users"
-        data={data} 
-        columns={columns} 
+        data={data}
+        columns={columns}
       />
     </main>
   );
