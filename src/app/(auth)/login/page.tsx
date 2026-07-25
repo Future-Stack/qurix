@@ -1,12 +1,22 @@
+"use client";
+
 import React from 'react';
+import LeftPanel from '@/components/auth/LeftPanel';
+import RightPanel from '@/components/auth/rightPanel/RightPanel';
+import LoginForm from '@/components/auth/rightPanel/LoginForm';
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow">
-        <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">
-          Sign in to your account
-        </h2>
+    <div className="flex min-h-screen font-sans">
+      <div className='w-full flex'>
+        <div className="hidden lg:block lg:w-[50%]">
+            <LeftPanel />
+        </div>
+        <div className="w-full lg:w-[50%] flex flex-col justify-center">
+          <RightPanel>
+            <LoginForm />
+          </RightPanel>
+        </div>
       </div>
     </div>
   );

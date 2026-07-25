@@ -1,26 +1,91 @@
 @import "tailwindcss";
+/* Roboto is loaded by next/font/google in layout.tsx — no @import needed here */
 
+
+/* ============================================================
+   DESIGN TOKENS — all brand colors live here
+   ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Background */
+  --color-bg:            #F8F9FA;
+  --color-surface:       #ffffff;
+  --color-surface-alt:   #F8FAFC;
+  --color-border:        #E2E8F0;
+
+  /* Brand — Primary Green */
+  --color-primary:       #06530B;
+  --color-primary-hover: #05290b;
+  --color-primary-light: #E6F4EA;
+  --color-primary-muted: #00AB0C1A;
+
+  /* Brand — Accent Green (buttons / links) */
+  --color-accent:        #00AB0C;
+  --color-accent-bright: #22C55E;
+  --color-accent-border: #DCFCE7;
+
+  /* Status */
+  --color-urgent-bg:     #FEE2E2;
+  --color-urgent-text:   #EF4444;
+  --color-active-text:   #22C55E;
+  --color-suspended-text:#EF4444;
+  --color-inactive-text: #64748B;
+  --color-delivered-bg:  #E2E8F0;
+  --color-delivered-text:#475569;
+
+  /* Text */
+  --color-text-primary:  #0F172A;
+  --color-text-secondary:#475569;
+  --color-text-muted:    #64748B;
+  --color-text-faint:    #94A3B8;
+  --color-text-heading:  #101828;
+
+  /* Timeline / countdown pill */
+  --color-timeline-bg:   #06530B;
+  --color-timeline-text: #ffffff;
+
+  /* Input */
+  --color-input-bg:      #F0FDF4;
+  --color-input-border:  #22C55E;
+
+  /* Gradient logo */
+  --color-grad-from:     #16A34A;
+  --color-grad-to:       #4ADE80;
+
+  /* Font — references the CSS variable injected by next/font/google */
+  --font-body: var(--font-roboto, 'Roboto', Arial, Helvetica, sans-serif);
 }
 
+/* ============================================================
+   GLOBAL THEME MAPPING (Tailwind v4)
+   ============================================================ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-surface);
+  --color-foreground: var(--color-text-primary);
+  --font-sans: var(--font-body);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   UTILITY: Hide scrollbar but keep scrollable
+   ============================================================ */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

@@ -15,16 +15,16 @@ import {
   Settings 
 } from 'lucide-react';
 
-export default function Sidebar() {
+export default function SuperAdminSidebar() {
   const pathname = usePathname();
 
   const navItems = [
-    { icon: LayoutGrid, path: '/service-line/dashboard', id: 'dashboard' },
-    { icon: MessageCircle, path: '/service-line/messages', id: 'messages' },
-    { icon: Users, path: '/service-line/all-employee', id: 'team' },
-    { icon: Phone, path: '/service-line/calls', id: 'phone' },
-    { icon: Target, path: '/service-line/team-management', id: 'target' },
-    { icon: UserPlus, path: '/service-line/employees', id: 'userplus' },
+    { icon: LayoutGrid, path: '/super-admin/dashboard', id: 'dashboard' },
+    { icon: MessageCircle, path: '/super-admin/messages', id: 'messages' },
+    { icon: Users, path: '/super-admin/all-users', id: 'users' },
+    { icon: Phone, path: '/super-admin/calls', id: 'phone' },
+    { icon: Target, path: '/super-admin/service-line-management', id: 'target' },
+    { icon: UserPlus, path: '#', id: 'userplus' },
     { icon: Bookmark, path: '#', id: 'bookmark' },
     { icon: BookOpen, path: '#', id: 'book' },
   ];
@@ -62,14 +62,14 @@ export default function Sidebar() {
       <div className="w-full px-4 pt-4 flex flex-col items-center mt-auto">
         <div className="w-8 h-[2px] bg-gradient-to-r from-transparent via-[#00AB0C] to-transparent opacity-80 mb-4 shadow-[0_0_6px_rgba(0,171,12,0.8)]"></div>
         <Link 
-          href="/service-line/settings"
+          href="/super-admin/settings"
           className={`w-12 h-12 flex items-center justify-center rounded-xl transition-colors ${
-            pathname?.startsWith('/service-line/settings')
+            pathname?.startsWith('/super-admin/settings')
               ? 'bg-[#E6F4EA] text-[#06530B]' 
               : 'text-[#64748B] hover:bg-gray-50'
           }`}
         >
-          <Settings className="w-5 h-5" strokeWidth={pathname?.startsWith('/service-line/settings') ? 2 : 1.5} />
+          <Settings className="w-5 h-5" strokeWidth={pathname?.startsWith('/super-admin/settings') ? 2 : 1.5} />
         </Link>
       </div>
     </div>

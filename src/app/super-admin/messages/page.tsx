@@ -6,6 +6,8 @@ import {
   AlertTriangle, X, BellOff, Bookmark, LogOut, Trash2, Edit2
 } from 'lucide-react';
 import { Dropdown, DropdownItem } from '@/components/ui/Dropdown/Dropdown';
+import { ConfirmationModal } from '@/components/ui/Modal/ConfirmationModal';
+import { UrgentActionModal } from '@/components/ui/Modal/UrgentActionModal';
 
 const mockChats = [
   { id: 1, type: 'group', name: 'franchys || Innosight || FO822580...', preview: 'Marina is typing....', time: '07:38 am', unread: 20, isOnline: true, avatar: 'https://i.pravatar.cc/150?u=11' },
@@ -26,17 +28,23 @@ const mockMessages = [
   { id: 7, sender: 'You', time: '10:45 am', text: 'I just completed it last night.', avatar: 'https://i.pravatar.cc/150?u=30', isMe: true },
 ];
 
-export default function AllEmployeePage() {
+export default function MessagesPage() {
   const [activeChat, setActiveChat] = useState<number | null>(null);
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(false);
   const [isChatListOpen, setIsChatListOpen] = useState(true);
+
+  // Modal States
+  const [isDeleteChatModalOpen, setIsDeleteChatModalOpen] = useState(false);
+  const [isLeaveGroupModalOpen, setIsLeaveGroupModalOpen] = useState(false);
+  const [isClearHistoryModalOpen, setIsClearHistoryModalOpen] = useState(false);
+  const [isUrgentModalOpen, setIsUrgentModalOpen] = useState(false);
 
   const activeChatData = mockChats.find(c => c.id === activeChat);
 
   const messageOptions: DropdownItem[] = [
     { label: 'Mark all as read', onClick: () => {} },
     { label: 'Show unread chat', onClick: () => {} },
-    { label: 'Show archives', onClick: () => {} },
+    { label: 'Show archives', warning: true, onClick: () => {} },
   ];
 
   const handleChatSelect = (id: number) => {
@@ -48,7 +56,7 @@ export default function AllEmployeePage() {
   };
 
   return (
-    <div className="flex h-full max-w-full bg-white rounded-[24px] shadow-sm border border-[#E2E8F0] overflow-hidden m-4 mr-4">
+    <div className="flex h-full max-w-full bg-white rounded-[24px] shadow-sm border border-[#E2E8F0] overflow-hidden my-4 mx-4  ">
       
       {/* Left Sidebar - Chat List */}
       <div className={`w-full lg:w-[380px] border-r border-[#E2E8F0] flex-col h-full bg-white shrink-0 ${isChatListOpen ? 'flex' : 'hidden lg:flex'}`}>
@@ -58,8 +66,8 @@ export default function AllEmployeePage() {
             <img src="https://i.pravatar.cc/150?u=30" alt="Me" className="w-full h-full rounded-full object-cover" />
           </div>
           <div className="min-w-0 flex-1">
-            <h2 className="font-bold text-[#0F172A] text-lg truncate">UX-SHAKIL</h2>
-            <p className="text-xs text-[#64748B] truncate">My Account</p>
+            <h2 className="font-bold text-[#0F172A] text-lg truncate">Omega Force</h2>
+            <p className="text-xs text-[#64748B] truncate">Admin Panel</p>
           </div>
         </div>
 
@@ -171,9 +179,21 @@ export default function AllEmployeePage() {
                           <div className="bg-[#06530B] text-white text-[10px] font-bold px-2 py-0.5 rounded">
                             3D 9H 25M 53S
                           </div>
-                          <div className="flex items-center gap-1 bg-[#475569] text-white text-[10px] font-bold px-2 py-0.5 rounded">
-                            WIP <ChevronDown className="w-3 h-3" />
-                          </div>
+                          <Dropdown
+                            align="left"
+                            trigger={
+                              <div className="flex items-center gap-1 bg-[#475569] text-white text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer">
+                                WIP <ChevronDown className="w-3 h-3" />
+                              </div>
+                            }
+                            items={[
+                              { label: 'WIP', onClick: () => {} },
+                              { label: 'Delivered', onClick: () => {} },
+                              { label: 'Canceled', onClick: () => {} },
+                              { label: 'Refund', onClick: () => {} },
+                              { label: 'Hold', onClick: () => {} }
+                            ]}
+                          />
                           <div className="flex items-center gap-1 bg-[#FEE2E2] text-[#EF4444] border border-[#FCA5A5] text-[10px] font-bold px-2 py-0.5 rounded">
                             <AlertTriangle className="w-3 h-3" /> URGENT <span className="w-2 h-2 rounded-full bg-orange-500 ml-1"></span>
                           </div>
@@ -200,10 +220,21 @@ export default function AllEmployeePage() {
                       <MoreVertical className="w-5 h-5" />
                     </button>
                   }
-                  items={[
+                  items={activeChatData.type === 'individual' ? [
+                    { label: 'Mute chat', onClick: () => {} },
                     { label: 'View info', onClick: () => setIsRightPanelOpen(true) },
+                    { label: 'Add favorite', onClick: () => {} },
                     { label: 'Archive chat', onClick: () => {} },
-                    { label: 'Clear chat', danger: true, onClick: () => {} }
+                    { label: 'Clear chat', danger: true, onClick: () => setIsClearHistoryModalOpen(true) },
+                    { label: 'Delete chat', danger: true, onClick: () => setIsDeleteChatModalOpen(true) }
+                  ] : [
+                    { label: 'Mute chat', onClick: () => {} },
+                    { label: 'View info', onClick: () => setIsRightPanelOpen(true) },
+                    { label: 'Add favorite', onClick: () => {} },
+                    { label: 'Archive chat', onClick: () => {} },
+                    { label: 'Clear chat', danger: true, onClick: () => setIsClearHistoryModalOpen(true) },
+                    { label: 'Leave group', danger: true, onClick: () => setIsLeaveGroupModalOpen(true) },
+                    { label: 'Mark as urgent', danger: true, onClick: () => setIsUrgentModalOpen(true) }
                   ]}
                 />
               </div>
@@ -213,7 +244,7 @@ export default function AllEmployeePage() {
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {mockMessages.map((msg, index) => {
                 const showDate = msg.date;
-                                const isFirstInSequence = index === 0;
+                const isFirstInSequence = index === 0 ;
 
                 // const isFirstInSequence = index === 0 || mockMessages[index - 1].sender !== msg.sender;
                 return (
@@ -244,14 +275,40 @@ export default function AllEmployeePage() {
                             <span className="text-[10px] text-[#94A3B8]">{msg.time}</span>
                           </div>
                         )}
-                        <div 
-                          className={`px-4 py-3 text-[13px] ${
-                            msg.isMe 
-                              ? `bg-[#06530B] text-white rounded-[20px] ${isFirstInSequence ? 'rounded-tr-none' : ''}` 
-                              : `bg-[#F8FAFC] text-[#475569] rounded-[20px] ${isFirstInSequence ? 'rounded-tl-none' : ''}`
-                          }`}
-                        >
-                          {msg.text}
+                        <div className={`flex items-center gap-2 group/msg ${msg.isMe ? 'flex-row-reverse' : 'flex-row'}`}>
+                          <div 
+                            className={`px-4 py-3 text-[13px] ${
+                              msg.isMe 
+                                ? `bg-[#06530B] text-white rounded-[20px] ${isFirstInSequence ? 'rounded-tr-none' : ''}` 
+                                : `bg-[#F8FAFC] text-[#475569] rounded-[20px] ${isFirstInSequence ? 'rounded-tl-none' : ''}`
+                            }`}
+                          >
+                            {msg.text}
+                          </div>
+                          
+                          <div className={`opacity-0 group-hover/msg:opacity-100 transition-opacity ${msg.isMe ? 'mr-1' : 'ml-1'}`}>
+                            <Dropdown
+                              align={msg.isMe ? 'right' : 'left'}
+                              trigger={
+                                <button className="w-6 h-6 rounded-full flex items-center justify-center text-gray-400 hover:bg-gray-100 transition-colors">
+                                  <MoreVertical className="w-4 h-4" />
+                                </button>
+                              }
+                              items={msg.isMe ? [
+                                { label: 'Reply', onClick: () => {} },
+                                { label: 'Edit text', onClick: () => {} },
+                                { label: 'Copy Text', onClick: () => {} },
+                                { label: 'Forward', onClick: () => {} },
+                                { label: 'Pin Message', onClick: () => {} },
+                                { label: 'Delete', danger: true, onClick: () => {} }
+                              ] : [
+                                { label: 'Reply', onClick: () => {} },
+                                { label: 'Copy text', onClick: () => {} },
+                                { label: 'Forward', onClick: () => {} },
+                                { label: 'Pin message', onClick: () => {} }
+                              ]}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -439,6 +496,46 @@ export default function AllEmployeePage() {
           </div>
 
         </div>
+      )}
+
+      {/* Confirmation Modals */}
+      {activeChatData && (
+        <>
+          <ConfirmationModal
+            isOpen={isDeleteChatModalOpen}
+            onClose={() => setIsDeleteChatModalOpen(false)}
+            onConfirm={() => console.log('Deleted chat')}
+            title={`Delete chat with ${activeChatData.name}?`}
+            description="All messages and shared media, links, files will be deleted and won't be able to restore again."
+            confirmText="Delete"
+          />
+          
+          <ConfirmationModal
+            isOpen={isLeaveGroupModalOpen}
+            onClose={() => setIsLeaveGroupModalOpen(false)}
+            onConfirm={() => console.log('Left group')}
+            title={`Leave group chat from ${activeChatData.name}?`}
+            description="You won't be able to see later messages and send message in this group anymore."
+            confirmText="Leave group"
+          />
+          
+          <ConfirmationModal
+            isOpen={isClearHistoryModalOpen}
+            onClose={() => setIsClearHistoryModalOpen(false)}
+            onConfirm={() => console.log('Cleared history')}
+            title="Clear chat history?"
+            description="All messages and shared media, links, files will be removed and chat will still show in your list."
+            confirmText="Clear chat"
+          />
+          
+          <UrgentActionModal
+            isOpen={isUrgentModalOpen}
+            onClose={() => setIsUrgentModalOpen(false)}
+            onConfirm={(explanation, notifyAll) => {
+              console.log('Marked as urgent', { explanation, notifyAll });
+            }}
+          />
+        </>
       )}
     </div>
   );
