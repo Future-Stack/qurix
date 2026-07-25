@@ -10,7 +10,9 @@ import {
   Phone, 
   Bookmark, 
   BookOpen, 
-  Settings 
+  Settings, 
+  MessageCircleDashed,
+  MessageCircle
 } from 'lucide-react';
 
 interface SidebarItem {
@@ -34,7 +36,7 @@ export default function Sidebar({
 
   const menuItems: SidebarItem[] = [
     { icon: LayoutGrid, href: `${basePath}/dashboard`, label: 'Dashboard' },
-    { icon: MessageSquare, href: `${basePath}/messages`, label: 'Messages' },
+    { icon: MessageCircle, href: `${basePath}/messages`, label: 'Messages' },
     { icon: Users, href: `${basePath}/contacts`, label: 'Contacts' },
     { icon: Phone, href: `${basePath}/call-logs`, label: 'Recent Calls' },
     { icon: Bookmark, href: `${basePath}/favorites`, label: 'Favorites' },
