@@ -1,10 +1,50 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import Sidebar from '@/components/employee-team-leader/layout/employee-team-leader/Sidebar/Sidebar';
+import SettingsModal from '@/components/employee-team-leader/shared/Settings/SettingsModal';
 
 export default function TeamLeaderLayout({ children }: { children: React.ReactNode }) {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const isSettingsRoute = pathname?.startsWith('/team-leader/settings');
+
+  // Open settings modal if user lands directly on /team-leader/settings route
+  useEffect(() => {
+    if (isSettingsRoute) {
+      setIsSettingsOpen(true);
+    }
+  }, [isSettingsRoute]);
+
+  const handleCloseSettings = () => {
+    setIsSettingsOpen(false);
+    if (isSettingsRoute) {
+      router.push('/team-leader/dashboard');
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="p-4 bg-green-800 text-white">Team Leader Panel</div>
-      {children}
+    <div className="h-screen max-h-screen overflow-hidden bg-[#f5f5f5] text-[#282828] flex flex-col md:flex-row p-0 md:p-6 lg:p-[30px] gap-6 lg:gap-[30px] font-sans antialiased relative">
+      {/* Navigation Sidebar */}
+      <Sidebar
+        basePath="/team-leader"
+        onOpenSettings={() => setIsSettingsOpen(true)}
+        isSettingsActive={isSettingsOpen}
+      />
+
+      {/* Main Content Area */}
+      <main className="flex-1 h-full max-h-full bg-white rounded-none md:rounded-[30px] border border-[#eaecf0] shadow-sm p-6 lg:p-[30px] overflow-hidden flex flex-col">
+        {children}
+      </main>
+
+      {/* Settings Modal Overlay */}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={handleCloseSettings}
+      />
     </div>
   );
 }
